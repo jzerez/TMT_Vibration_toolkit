@@ -1,0 +1,8 @@
+Questions:
+trade-offs behind having a larger or smaller bandwidth window when calculating PSD?
+
+Is this done in the time domain or the frequency domain? If it were done in the frequency domain, why we need to square it?
+
+Bartlett/Welch method: why do we take "short time" samples of the data?
+
+why exactly do we do the reverse integral? Why does it work? Why do we multiply mass by g?
