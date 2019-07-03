@@ -85,9 +85,18 @@ global t0;
 global test;
 global time_buffer;
 global triggerWindow
+global useTrigger
+global test1;
 collection_complete = 0;
+test1 = {};
 
-t0 = 0;
+if ~useTrigger
+    t0 = tic;
+else
+    t0 = 0;
+end
+time = [];
+data = [];
 
 
 s.Rate = SampleRates(get(handles.SampleRate,'Value'));
@@ -98,15 +107,12 @@ s.IsContinuous = 1;
 % s.DurationInSeconds = str2double(get(handles.Acq_duration,'String'));
 duration = str2double(get(handles.Acq_duration,'String'));
 lh = addlistener(s, 'DataAvailable', @waitForVib);
+[signal, signal_f] = Chirp_tool(0);
 startBackground(s);
+soundsc(signal, signal_f);
 % [data, time, ~] = startForeground(s);
+
 while ~collection_complete
-    disp('collecting...')
-    if t0 ~= 0
-        disp(toc(t0) / duration)
-    end
-    disp(test(1, :))
-    disp(size(data))
     pause(0.1)
 end
 stop(s);
@@ -583,7 +589,7 @@ function Savefig_Callback(hObject, eventdata, handles)
 [FileName, PathName] = uiputfile('*.fig','Save Entire Figure As...');
 hgsave(fullfile(PathName,FileName));
 
-function waitForVib(src, event)
+function waitForVib(src, event, handles)
     global collection_complete;
     global data_buffer;
     global time_buffer;
@@ -592,28 +598,18 @@ function waitForVib(src, event)
     global time;
     global duration
     global test;
-    global useTrigger;
     
     global test1;
-    global test2;
-    global test3;
     test = event.Data;
-    
-    disp(t0)
-    
+    disp('packet recieved')
     if t0 == 0
-        if ~useTrigger
-            t0 = tic;
-        end
+        disp('WWWWWW')
         if max(max(data_buffer)) > 0.005
             % Start to collect data
             t0 = tic;
             data = [flipud(data_buffer(time_buffer > -1, :)); event.Data];
             time = [flipud(time_buffer(time_buffer > -1)); event.TimeStamps];
             
-            test1 = time_buffer;
-            test2 = flipud(time_buffer(time_buffer > -1));
-            test3 = time;
         else
             shift = size(event.Data, 1);
             data_buffer = circshift(data_buffer, shift);
@@ -621,20 +617,16 @@ function waitForVib(src, event)
             
             time_shift = size(event.TimeStamps, 1);
             time_buffer = circshift(time_buffer, time_shift);
-            time_buffer(1:time_shift, :) = flipud(event.TimeStamps); 
+            time_buffer(1:time_shift, :) = flipud(event.TimeStamps);
         end
     elseif toc(t0) < duration
         data = [data; event.Data];
         time = [time; event.TimeStamps];
+        test1{length(test1) + 1} = event.TimeStamps;
     else
         collection_complete = 1;
         disp('FINISHED')
     end
-%     bb
-%     plot(event.TimeStamps,event.Data);
-%     disp(size(event.Data))
-%     hold on
-
 
 % --- Executes on button press in loadDataButton.
 function loadDataButton_Callback(hObject, eventdata, handles)
@@ -703,6 +695,7 @@ function parse_data(time, data, handles)
     legend(legendTimestrings, 'Interpreter', 'none');
 
     %Plot PSD data for any Channels that were ticked
+    hold off
     axes(handles.axes2);
     loglog(w,accPSD);
     legend(legendPSDstrings, 'Interpreter', 'none');
@@ -729,7 +722,9 @@ function triggerCheck_Callback(hObject, eventdata, handles)
 global useTrigger;
 useTrigger = get(hObject, 'Value');
 
-
+function triggerCheck_CreateFnc(hObject, eventdata, handles)
+global triggerWindow;
+triggerWindow = 0;
 
 % --- Executes on selection change in triggerWindow.
 function triggerWindow_Callback(hObject, eventdata, handles)

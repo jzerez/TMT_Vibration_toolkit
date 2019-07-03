@@ -1,3 +1,4 @@
+function [out, framerate] = Chirp_tool(plot_on)
 %% Define characteristics of input bin wave
 
 % Ramping style 
@@ -5,12 +6,11 @@
 ramp_style = 'none';
 
 % Frequency Range (Hz)
-min_f = 440;
-max_f = 1600;
-
+min_f = 110;
+max_f = 400;
 
 % Number of frequency bins (#)
-num_f = 2;
+num_f = 4;
 
 % Total time (s)
 t = 10;
@@ -60,12 +60,15 @@ else
         f_func(r_end+1:r_end+num_f_samples) = f_cum(i, :);
     end
 end
-close all
-figure
-plot(f_func)
-figure
 dphi = f_func * 2 * pi / f_rate;
 signal = cumtrapz(dphi);
-plot(sin(signal))
-figure
-spectrogram(sin(signal), 'yaxis')
+out = sin(signal);
+framerate = f_rate;
+if plot_on
+    figure
+    plot(f_func)
+    figure
+    plot(out)
+    figure
+    spectrogram(out, 'yaxis')
+end

@@ -1,0 +1,12 @@
+ramp_style = 'exp';
+
+min_f = 110;
+max_f = 400;
+
+num_f = 2;
+
+t = 10;
+
+ramp_time = 10;
+
+f_rate = 44100;
