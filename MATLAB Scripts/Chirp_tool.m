@@ -3,14 +3,14 @@ function [out, framerate] = Chirp_tool(plot_on)
 
 % Ramping style 
 % How do we progress from different frequencies? 'lin', 'exp', or 'none'
-ramp_style = 'none';
+ramp_style = 'exp';
 
 % Frequency Range (Hz)
 min_f = 110;
-max_f = 400;
+max_f = 440;
 
 % Number of frequency bins (#)
-num_f = 4;
+num_f = 2;
 
 % Total time (s)
 t = 10;
