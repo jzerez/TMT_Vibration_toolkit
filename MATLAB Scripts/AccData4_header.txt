@@ -1,0 +1,21 @@
+
+% Ramping style 
+% How do we progress from different frequencies? 'lin', 'exp', or 'none'
+ramp_style = 'exp';
+
+% Frequency Range (Hz)
+min_f = 110;
+max_f = 440;
+
+% Number of frequency bins (#)
+num_f = 2;
+
+% Total time (s)
+t = 10;
+
+% Ramp time. 
+% How much time do we spend ramping between frequencies?
+ramp_time = 10;
+
+% framerate (#/s)
+f_rate = 44100;
