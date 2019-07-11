@@ -56,7 +56,7 @@ set(handles.RemoveCount, 'String', ChannelNameDisp);
 Chan_IDs = devices(1,2).Subsystems.ChannelNames;
 set(handles.Chan_ID,'String',Chan_IDs);
 HeadText = get(handles.HeaderText,'String');
-windows = {'0.5', '1', '1.5', '2', '2f.5', '3', '5'};
+windows = {'0.5', '1', '1.5', '2', '2.5', '3', '5'};
 set(handles.triggerWindow, 'String', windows);
 
 % Choose default command line output for Accel_plotter
@@ -105,7 +105,7 @@ s.IsContinuous = 1;
 % s.DurationInSeconds = str2double(get(handles.Acq_duration,'String'));
 duration = str2double(get(handles.Acq_duration,'String'));
 lh = addlistener(s, 'DataAvailable', @waitForVib);
-[signal, signal_f] = Chirp_tool(0);
+[signal, signal_f] = Chirp_tool('lin', 220, 440, 2, 10, 10, 44100, 1);
 
 if ~useTrigger
     t0 = tic;
@@ -113,7 +113,7 @@ else
     t0 = 0;
 end
 startBackground(s);
-% soundsc(signal, signal_f);
+soundsc(signal, signal_f);
 % [data, time, ~] = startForeground(s);
 
 while ~collection_complete
@@ -627,6 +627,11 @@ function waitForVib(src, event, handles)
         if isempty(time)
             data = [data; event.Data];
             time = [time; event.TimeStamps];
+            
+        % This is a really sloppy fix to an issue where concurrent runs
+        % of the data acquisition script would cause duplicate packets of
+        % data to be imported. The root cause was never identified as of
+        % 7/9/19
         elseif event.TimeStamps(1) > time(end)
             data = [data; event.Data];
             time = [time; event.TimeStamps];
