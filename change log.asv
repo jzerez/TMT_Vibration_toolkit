@@ -21,3 +21,12 @@
         -Coherance
         -Need to do:
             -Figure out coherance windowing parameters (big differences depending on windowing)
+    -General
+        -Check for non-zero collection time and non-zero system mass
+
+7/16/19
+- Low progress because of Akamai meeting
+- Cummulative Data Tab
+    -Configuration text box now gets populated with data
+    -Added option to clear cummulative data
+- 
