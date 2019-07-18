@@ -29,3 +29,19 @@
 - Cummulative Data Tab
     -Configuration text box now gets populated with data
     -Added option to clear cummulative data
+
+7/17/19
+-Started testing with impact hammer. B&K 8207
+    -0.225 V/N
+    -Brown, Green, Red, Black tips (softest to hardest)
+- Debugged time sync issues
+    -reject duplicate packets from NI-DAQ
+- Added multi-hit detection
+- Possibility:
+    - Make trigger only look for information from the hammer channel
+-Added new default config
+-Outstanding work;
+    -how to average impacts
+    -windowing for coherance?
+    -frequency response?
+

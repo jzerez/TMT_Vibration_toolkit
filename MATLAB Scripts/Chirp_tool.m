@@ -56,13 +56,10 @@ end
 dphi = f_func * 2 * pi / f_rate;
 signal = cumtrapz(dphi);
 out = sin(signal);
-framerate = f_rate;
-soundsc(out, framerate)
+
 if plot_on
     figure
     plot(f_func)
     figure
-    plot(out)
-    figure
-    spectrogram(out, 'yaxis')
+    semilogy(abs(fft(out)))
 end
