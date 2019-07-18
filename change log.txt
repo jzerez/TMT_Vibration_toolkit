@@ -44,4 +44,28 @@
     -how to average impacts
     -windowing for coherance?
     -frequency response?
-
+7/18/19
+Notes from meeting from peter:
+    - averaging Coherance
+        - check response from peter
+        - check for matlab build in functionality
+    -aboe the frequency of the rigid body mode, below the frequency of the bending modes. Should be a flat line (1/m). CAlled the mass line within the frequency response graph
+    - for high frequency measurement, multiple acceleromters are used
+    - Measure the damping ratio of the MSIT structure
+    - Measure the transfer function of the MSIT structure
+    - 
+    hammer tests
+        - signal decays, therefore there is high signal to noise ratio
+        - faster than modal exciters
+        - less control over what modes are being excited (you could be exciting local modes and not rigid body modes)
+    modal accelerators
+        - lot more "response engergy" higher signal to noise ratio
+        -how to choose the rate of change of a linear chirp? avoid having excessive noise in a linear chirp
+        -linear chirps are used commonly for resonant searches. Not used to stress the system or simulate an input, just used for characterizing (low amplitude inputs)
+-Better windowing for impulse graph
+-created solidworks file that denotes the location of MSIT mounts
+-To dos:
+    - change impulse spectrum to PSD
+    - Change frequency response to PSD impulse/ PSD response
+    - Average PSDs and plot in cumm data tab
+    - Saving functionalities
