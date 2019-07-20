@@ -69,3 +69,12 @@ Notes from meeting from peter:
     - Change frequency response to PSD impulse/ PSD response
     - Average PSDs and plot in cumm data tab
     - Saving functionalities
+
+7/19/19
+-Added a few GUI alerts for missing channels/missing DAQ
+-Changed spectrum graphs to PSDs
+-Changed frequency response graph to A/F = 1/m
+-Tried to separate coherance graph into Pxx, Pxy, Pyy. Failed.
+    -Coherance is always 1. Similar to results from mscohere wtih excessive windowing
+    -Why is this the case? pretty sure the math is right...
+-Pretty freaking slow oh my gosh
