@@ -93,8 +93,9 @@ Notes from meeting from peter:
         -user gets prompted before this happens
     -Add new plot for impact PSD in cummulative page
     -Add save button for figures
-    
+    -
 -Need to do:
+    
     -Add UI elements to control what gets plotted in coherance plot
     -Cohesive saving functionality
     -Add damping estimation functionality
