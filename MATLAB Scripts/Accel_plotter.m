@@ -30,6 +30,9 @@ global ChannelName;
 global data;
 global s;
 global windows;
+global test;
+
+test = [];
 
 ChannelProps = [];
 time = [];
@@ -90,14 +93,9 @@ global test1;
 collection_complete = 0;
 test1 = {};
 
-if ~useTrigger
-    t0 = tic;
-else
-    t0 = 0;
-end
+
 time = [];
 data = [];
-
 
 s.Rate = SampleRates(get(handles.SampleRate,'Value'));
 data_buffer = zeros([s.Rate * triggerWindow, length(ChannelProps)]);
@@ -107,14 +105,21 @@ s.IsContinuous = 1;
 % s.DurationInSeconds = str2double(get(handles.Acq_duration,'String'));
 duration = str2double(get(handles.Acq_duration,'String'));
 lh = addlistener(s, 'DataAvailable', @waitForVib);
-[signal, signal_f] = Chirp_tool(0);
+[signal, signal_f] = Chirp_tool('lin', 220, 440, 2, 10, 10, 44100, 1);
+
+if ~useTrigger
+    t0 = tic;
+else
+    t0 = 0;
+end
 startBackground(s);
 soundsc(signal, signal_f);
 % [data, time, ~] = startForeground(s);
 
 while ~collection_complete
-    pause(0.1)
+    pause(0.01)
 end
+% wait(s);
 stop(s);
 parse_data(time, data, handles);
 
@@ -409,7 +414,7 @@ for Channel=1:ChannelCount
     if strcmp(ChannelProps(Channel).MeasType, 'IEPE')
         s.Channels(Channel).ExcitationCurrent = ChannelProps(Channel).ExCurr;
     elseif strcmp(ChannelProps(Channel).MeasType, 'Accelerometer')
-        s.Channels(Channel).ExcitationSource = 'None';
+        s.Channels(Channel).ExcitatfionSource = 'None';
         s.Channels(Channel).Sensitivity = ChannelProps(Channel).AccSens;
     end
 end
@@ -599,12 +604,11 @@ function waitForVib(src, event, handles)
     global duration
     global test;
     
-    global test1;
-    test = event.Data;
+    test = [test, length(event.Data)];
     disp('packet recieved')
     if t0 == 0
-        disp('WWWWWW')
-        if max(max(data_buffer)) > 0.005
+        disp('Waiting for trigger event...')
+        if max(max(data_buffer)) > 0.007
             % Start to collect data
             t0 = tic;
             data = [flipud(data_buffer(time_buffer > -1, :)); event.Data];
@@ -620,9 +624,18 @@ function waitForVib(src, event, handles)
             time_buffer(1:time_shift, :) = flipud(event.TimeStamps);
         end
     elseif toc(t0) < duration
-        data = [data; event.Data];
-        time = [time; event.TimeStamps];
-        test1{length(test1) + 1} = event.TimeStamps;
+        if isempty(time)
+            data = [data; event.Data];
+            time = [time; event.TimeStamps];
+            
+        % This is a really sloppy fix to an issue where concurrent runs
+        % of the data acquisition script would cause duplicate packets of
+        % data to be imported. The root cause was never identified as of
+        % 7/9/19
+        elseif event.TimeStamps(1) > time(end)
+            data = [data; event.Data];
+            time = [time; event.TimeStamps];
+        end
     else
         collection_complete = 1;
         disp('FINISHED')
@@ -723,8 +736,8 @@ global useTrigger;
 useTrigger = get(hObject, 'Value');
 
 function triggerCheck_CreateFnc(hObject, eventdata, handles)
-global triggerWindow;
-triggerWindow = 0;
+global useTrigger;
+useTrigger = 0;
 
 % --- Executes on selection change in triggerWindow.
 function triggerWindow_Callback(hObject, eventdata, handles)

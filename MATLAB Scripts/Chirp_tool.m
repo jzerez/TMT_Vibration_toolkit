@@ -1,26 +1,19 @@
-function [out, framerate] = Chirp_tool(plot_on)
+function [out, framerate] = Chirp_tool(ramp_style, min_f, max_f, num_f, t, ramp_time, f_rate, plot_on)
 %% Define characteristics of input bin wave
 
-% Ramping style 
-% How do we progress from different frequencies? 'lin', 'exp', or 'none'
-ramp_style = 'exp';
-
-% Frequency Range (Hz)
-min_f = 110;
-max_f = 440;
-
-% Number of frequency bins (#)
-num_f = 2;
-
-% Total time (s)
-t = 10;
-
-% Ramp time. 
-% How much time do we spend ramping between frequencies?
-ramp_time = 10;
-
-% framerate (#/s)
-f_rate = 44100;
+% % Ramping style 
+% % How do we progress from different frequencies? 'lin', 'exp', or 'none'
+% 
+% % Frequency Range (Hz)
+% 
+% % Number of frequency bins (#)
+% 
+% % Total time (s)
+% 
+% % Ramp time (s)
+% % How much time do we spend ramping between frequencies?
+% 
+% % framerate (Hz)
 %% Create signal
 all_fs = linspace(min_f, max_f, num_f);
 if strcmp(ramp_style, 'none')
@@ -63,13 +56,10 @@ end
 dphi = f_func * 2 * pi / f_rate;
 signal = cumtrapz(dphi);
 out = sin(signal);
-framerate = f_rate;
-soundsc(out, framerate)
+
 if plot_on
     figure
     plot(linspace(0,t,length(f_func)), f_func)
     figure
-    plot(out)
-    figure
-    spectrogram(out, 'yaxis')
+    semilogy(abs(fft(out)))
 end
