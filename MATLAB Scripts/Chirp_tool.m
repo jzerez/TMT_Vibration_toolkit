@@ -67,7 +67,7 @@ framerate = f_rate;
 soundsc(out, framerate)
 if plot_on
     figure
-    plot(f_func)
+    plot(linspace(0,t,length(f_func)), f_func)
     figure
     plot(out)
     figure
