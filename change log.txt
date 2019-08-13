@@ -116,3 +116,32 @@ Notes from meeting from peter:
 
 7/25/19:
 -Added channel selection for coherance plot generation
+
+7/29/19:
+-Tried to get the Ansys model of the MSIT to solve with limited sucess
+    -Need to eveutally get a transfer function out of ansys
+-Tried to CAD a simplified version of the MSIT for analysis
+    -Line bodies not great for modal analysis...
+    -Weldments used, but no solution for the top chords
+-Met with Doug
+    -He has matlab tools to help to determine the transfer functions of a part by parsing outputs from Ansys modal studies in Matlab
+        -Probably not worth the time for me to learn how to use these tools
+    -Ansys should have built in ways of measuring the transfer functions of a part, albiet slower
+        -Get amir to help/do at least one for me. 
+
+
+7/30/19 9:00a:
+-Going to the lab. Testing plans for the day below:
+    -Inquire about super glue/hot glue/duct tape
+    -Inquire about best methods for afixing accelerometers to the testing rig
+    -Test instrumentation and ensure everything is working
+        -Triggering with hammer
+        -High coherance between two similar accelerometer axes
+        -Averaging
+        -Saving
+        -Loading
+    -Measure sensitivity
+        -What does walking on the MSIT look like compared to a hammer hit?
+        -What does walking around the MSIT look like compared to a hammer hit?
+    -Measure ring-down time (will be helpful in determining time to wait between tests)
+    -
