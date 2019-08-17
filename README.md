@@ -57,6 +57,7 @@ Contains data collected from accelerometers in datasets
 **Note on Dataset naming nomenclature:**
 Each dataset collected from the MSIT will have the same naming convention:
 `MSIT_X#-Y#_COLOR_D#.mat`
+
 |  | _MSIT_ | X# | Y# | COLOR | D# | _.mat_|
 |:----:|:----:|:----:|:----:|:----:|:----:|:----:|
 |**Description**| - | Input location | Output location | Hammer tip color | Direction of Force input (see accelerometer channel names)| - |
